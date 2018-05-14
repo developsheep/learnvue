@@ -4,6 +4,19 @@
     <h2>Essential Links</h2>
     <input v-model="msg"/>
     <span>{{msg}}</span>
+    <div id="components-demo">
+      <hello></hello>
+    </div>
+
+    <div id="blog-posts-events-demo">
+      <div :style="{ fontSize: postFontSize + 'em' }">
+        <blog-post
+          v-for="post in posts"
+          v-bind:key="post.id"
+          v-bind:post="post"
+        ></blog-post>
+      </div>
+    </div>
     <div v></div>
     <ul>
       <li>
@@ -83,20 +96,53 @@
       </li>
     </ul>
   </div>
+
 </template>
 
 <script>
+
+  import Vue from "vue/dist/vue.esm";
+
   export default {
     name: 'HelloWorld',
-    data () {
+    data() {
       return {
         msg: 'Welcome to Your Vue.js App'
       }
-    },
-    beforeCreate () {
-      alert(window.outerHeight)
     }
   }
+  var componentA = {template:'<button v-on:click="count++">You clicked me {{ count }} times.</button>'}
+
+
+  // Vue.component("hello", {
+  //   data: function () {
+  //     return {
+  //       count: 0
+  //     }
+  //   },
+  //   template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
+  // })
+
+  new Vue({
+    el: '#components-demo',
+    components:{
+      'component-a': componentA
+    }
+  })
+
+  Vue.component('blog-post', {
+    props: ['post'],
+    template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <button>
+        Enlarge text
+      </button>
+      <div v-html="post.content"></div>
+    </div>
+  `
+  })
+
 
 </script>
 
